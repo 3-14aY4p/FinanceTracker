@@ -34,12 +34,12 @@ public class DashboardPage extends javax.swing.JFrame {
         btn_dashboard = new javax.swing.JButton();
         btn_add = new javax.swing.JButton();
         btn_manage = new javax.swing.JButton();
-        btn_overview = new javax.swing.JButton();
-        btn_logout = new javax.swing.JButton();
+        btn_accounts = new javax.swing.JButton();
+        btn_exit = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         lbl_title1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        lbl_networth = new javax.swing.JLabel();
+        lbl_netIncome = new javax.swing.JLabel();
         lbl_income = new javax.swing.JLabel();
         lbl_expense = new javax.swing.JLabel();
         lbl_title2 = new javax.swing.JLabel();
@@ -64,12 +64,14 @@ public class DashboardPage extends javax.swing.JFrame {
         btn_dashboard.setText("Dashboard");
         btn_dashboard.setContentAreaFilled(false);
         btn_dashboard.setEnabled(false);
+        btn_dashboard.setFocusPainted(false);
         jPanel1.add(btn_dashboard);
         btn_dashboard.setBounds(10, 90, 150, 40);
 
         btn_add.setFont(new java.awt.Font("Adwaita Mono", 0, 12)); // NOI18N
         btn_add.setText("New Record");
         btn_add.setContentAreaFilled(false);
+        btn_add.setFocusPainted(false);
         btn_add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_addActionPerformed(evt);
@@ -81,6 +83,7 @@ public class DashboardPage extends javax.swing.JFrame {
         btn_manage.setFont(new java.awt.Font("Adwaita Mono", 0, 12)); // NOI18N
         btn_manage.setText("Manage Records");
         btn_manage.setContentAreaFilled(false);
+        btn_manage.setFocusPainted(false);
         btn_manage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_manageActionPerformed(evt);
@@ -89,27 +92,29 @@ public class DashboardPage extends javax.swing.JFrame {
         jPanel1.add(btn_manage);
         btn_manage.setBounds(10, 210, 150, 40);
 
-        btn_overview.setFont(new java.awt.Font("Adwaita Mono", 0, 12)); // NOI18N
-        btn_overview.setText("Overview");
-        btn_overview.setContentAreaFilled(false);
-        btn_overview.addActionListener(new java.awt.event.ActionListener() {
+        btn_accounts.setFont(new java.awt.Font("Adwaita Mono", 0, 12)); // NOI18N
+        btn_accounts.setText("Accounts");
+        btn_accounts.setContentAreaFilled(false);
+        btn_accounts.setFocusPainted(false);
+        btn_accounts.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_overviewActionPerformed(evt);
+                btn_accountsActionPerformed(evt);
             }
         });
-        jPanel1.add(btn_overview);
-        btn_overview.setBounds(10, 260, 150, 40);
+        jPanel1.add(btn_accounts);
+        btn_accounts.setBounds(10, 260, 150, 40);
 
-        btn_logout.setFont(new java.awt.Font("Adwaita Mono", 0, 12)); // NOI18N
-        btn_logout.setText("Log Out ...");
-        btn_logout.setContentAreaFilled(false);
-        btn_logout.addActionListener(new java.awt.event.ActionListener() {
+        btn_exit.setFont(new java.awt.Font("Adwaita Mono", 0, 12)); // NOI18N
+        btn_exit.setText("Exit");
+        btn_exit.setContentAreaFilled(false);
+        btn_exit.setFocusPainted(false);
+        btn_exit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_logoutActionPerformed(evt);
+                btn_exitActionPerformed(evt);
             }
         });
-        jPanel1.add(btn_logout);
-        btn_logout.setBounds(10, 420, 150, 40);
+        jPanel1.add(btn_exit);
+        btn_exit.setBounds(10, 420, 150, 40);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 170, 480);
@@ -124,20 +129,23 @@ public class DashboardPage extends javax.swing.JFrame {
         jPanel2.add(jSeparator1);
         jSeparator1.setBounds(170, 40, 410, 20);
 
-        lbl_networth.setFont(new java.awt.Font("Adwaita Mono", 0, 24)); // NOI18N
-        lbl_networth.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbl_networth.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "NET WORTH", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Adwaita Mono", 1, 13))); // NOI18N
-        jPanel2.add(lbl_networth);
-        lbl_networth.setBounds(30, 80, 170, 100);
+        lbl_netIncome.setFont(new java.awt.Font("Adwaita Mono", 0, 24)); // NOI18N
+        lbl_netIncome.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_netIncome.setText("0");
+        lbl_netIncome.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "NET INCOME", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Adwaita Mono", 1, 13))); // NOI18N
+        jPanel2.add(lbl_netIncome);
+        lbl_netIncome.setBounds(30, 80, 170, 100);
 
         lbl_income.setFont(new java.awt.Font("Adwaita Mono", 0, 24)); // NOI18N
         lbl_income.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_income.setText("0");
         lbl_income.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "TOTAL INCOME", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Adwaita Mono", 1, 13))); // NOI18N
         jPanel2.add(lbl_income);
         lbl_income.setBounds(220, 80, 170, 100);
 
         lbl_expense.setFont(new java.awt.Font("Adwaita Mono", 0, 24)); // NOI18N
         lbl_expense.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_expense.setText("0");
         lbl_expense.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "TOTAL EXPENSE", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Adwaita Mono", 1, 13))); // NOI18N
         jPanel2.add(lbl_expense);
         lbl_expense.setBounds(410, 80, 170, 100);
@@ -186,13 +194,8 @@ public class DashboardPage extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_logoutActionPerformed
-        new LoginPage().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btn_logoutActionPerformed
-
     private void btn_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addActionPerformed
-        new NewTransactionPage().setVisible(true);
+        new TransactPage_InEx().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btn_addActionPerformed
 
@@ -201,10 +204,14 @@ public class DashboardPage extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btn_manageActionPerformed
 
-    private void btn_overviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_overviewActionPerformed
-        new TransactionsOverviewPage().setVisible(true);
+    private void btn_accountsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_accountsActionPerformed
+        new AccountsPage().setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_btn_overviewActionPerformed
+    }//GEN-LAST:event_btn_accountsActionPerformed
+
+    private void btn_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_exitActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_btn_exitActionPerformed
 
     /**
      * @param args the command line arguments
@@ -232,11 +239,11 @@ public class DashboardPage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_accounts;
     private javax.swing.JButton btn_add;
     private javax.swing.JButton btn_dashboard;
-    private javax.swing.JButton btn_logout;
+    private javax.swing.JButton btn_exit;
     private javax.swing.JButton btn_manage;
-    private javax.swing.JButton btn_overview;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -244,7 +251,7 @@ public class DashboardPage extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_appName;
     private javax.swing.JLabel lbl_expense;
     private javax.swing.JLabel lbl_income;
-    private javax.swing.JLabel lbl_networth;
+    private javax.swing.JLabel lbl_netIncome;
     private javax.swing.JLabel lbl_title1;
     private javax.swing.JLabel lbl_title2;
     private javax.swing.JTable tbl_transactions;

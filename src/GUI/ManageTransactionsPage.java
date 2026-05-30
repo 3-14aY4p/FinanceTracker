@@ -4,8 +4,8 @@
  */
 package GUI;
 
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.*;
+import javax.swing.table.*;
 
 /**
  *
@@ -36,8 +36,8 @@ public class ManageTransactionsPage extends javax.swing.JFrame {
         btn_dashboard = new javax.swing.JButton();
         btn_add = new javax.swing.JButton();
         btn_manage = new javax.swing.JButton();
-        btn_overview = new javax.swing.JButton();
-        btn_logout = new javax.swing.JButton();
+        btn_accounts = new javax.swing.JButton();
+        btn_exit = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         lbl_title1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -46,8 +46,8 @@ public class ManageTransactionsPage extends javax.swing.JFrame {
         btn_search = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_transactions = new javax.swing.JTable();
-        btn_editRow = new javax.swing.JButton();
         btn_deleteRow = new javax.swing.JButton();
+        btn_editRow = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("MFinance Tracker");
@@ -66,6 +66,7 @@ public class ManageTransactionsPage extends javax.swing.JFrame {
         btn_dashboard.setFont(new java.awt.Font("Adwaita Mono", 0, 12)); // NOI18N
         btn_dashboard.setText("Dashboard");
         btn_dashboard.setContentAreaFilled(false);
+        btn_dashboard.setFocusPainted(false);
         btn_dashboard.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_dashboardActionPerformed(evt);
@@ -77,6 +78,7 @@ public class ManageTransactionsPage extends javax.swing.JFrame {
         btn_add.setFont(new java.awt.Font("Adwaita Mono", 0, 12)); // NOI18N
         btn_add.setText("New Record");
         btn_add.setContentAreaFilled(false);
+        btn_add.setFocusPainted(false);
         btn_add.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_addActionPerformed(evt);
@@ -89,30 +91,33 @@ public class ManageTransactionsPage extends javax.swing.JFrame {
         btn_manage.setText("Manage Records");
         btn_manage.setContentAreaFilled(false);
         btn_manage.setEnabled(false);
+        btn_manage.setFocusPainted(false);
         jPanel1.add(btn_manage);
         btn_manage.setBounds(10, 210, 150, 40);
 
-        btn_overview.setFont(new java.awt.Font("Adwaita Mono", 0, 12)); // NOI18N
-        btn_overview.setText("Overview");
-        btn_overview.setContentAreaFilled(false);
-        btn_overview.addActionListener(new java.awt.event.ActionListener() {
+        btn_accounts.setFont(new java.awt.Font("Adwaita Mono", 0, 12)); // NOI18N
+        btn_accounts.setText("Accounts");
+        btn_accounts.setContentAreaFilled(false);
+        btn_accounts.setFocusPainted(false);
+        btn_accounts.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_overviewActionPerformed(evt);
+                btn_accountsActionPerformed(evt);
             }
         });
-        jPanel1.add(btn_overview);
-        btn_overview.setBounds(10, 260, 150, 40);
+        jPanel1.add(btn_accounts);
+        btn_accounts.setBounds(10, 260, 150, 40);
 
-        btn_logout.setFont(new java.awt.Font("Adwaita Mono", 0, 12)); // NOI18N
-        btn_logout.setText("Log Out ...");
-        btn_logout.setContentAreaFilled(false);
-        btn_logout.addActionListener(new java.awt.event.ActionListener() {
+        btn_exit.setFont(new java.awt.Font("Adwaita Mono", 0, 12)); // NOI18N
+        btn_exit.setText("Exit");
+        btn_exit.setContentAreaFilled(false);
+        btn_exit.setFocusPainted(false);
+        btn_exit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_logoutActionPerformed(evt);
+                btn_exitActionPerformed(evt);
             }
         });
-        jPanel1.add(btn_logout);
-        btn_logout.setBounds(10, 420, 150, 40);
+        jPanel1.add(btn_exit);
+        btn_exit.setBounds(10, 420, 150, 40);
 
         getContentPane().add(jPanel1);
         jPanel1.setBounds(0, 0, 170, 480);
@@ -175,17 +180,6 @@ public class ManageTransactionsPage extends javax.swing.JFrame {
         jPanel2.add(jScrollPane1);
         jScrollPane1.setBounds(30, 130, 550, 290);
 
-        btn_editRow.setFont(new java.awt.Font("Adwaita Mono", 0, 13)); // NOI18N
-        btn_editRow.setText("Edit");
-        btn_editRow.setContentAreaFilled(false);
-        btn_editRow.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_editRowActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btn_editRow);
-        btn_editRow.setBounds(350, 430, 110, 30);
-
         btn_deleteRow.setFont(new java.awt.Font("Adwaita Mono", 0, 13)); // NOI18N
         btn_deleteRow.setText("Delete");
         btn_deleteRow.setContentAreaFilled(false);
@@ -197,6 +191,17 @@ public class ManageTransactionsPage extends javax.swing.JFrame {
         jPanel2.add(btn_deleteRow);
         btn_deleteRow.setBounds(470, 430, 110, 30);
 
+        btn_editRow.setFont(new java.awt.Font("Adwaita Mono", 0, 13)); // NOI18N
+        btn_editRow.setText("Edit");
+        btn_editRow.setContentAreaFilled(false);
+        btn_editRow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_editRowActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btn_editRow);
+        btn_editRow.setBounds(350, 430, 110, 30);
+
         getContentPane().add(jPanel2);
         jPanel2.setBounds(170, 0, 610, 480);
 
@@ -204,39 +209,37 @@ public class ManageTransactionsPage extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_logoutActionPerformed
-        new LoginPage().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btn_logoutActionPerformed
-
     private void btn_dashboardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_dashboardActionPerformed
         new DashboardPage().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btn_dashboardActionPerformed
 
     private void btn_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addActionPerformed
-        new NewTransactionPage().setVisible(true);
+        new TransactPage_InEx().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btn_addActionPerformed
 
-    private void btn_overviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_overviewActionPerformed
-        new TransactionsOverviewPage().setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_btn_overviewActionPerformed
+    private void btn_exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_exitActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_btn_exitActionPerformed
 
-    private void btn_deleteRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteRowActionPerformed
-        DefaultTableModel tableModel = (DefaultTableModel) tbl_transactions.getModel();
-        
-        if(tbl_transactions.getSelectedRow() != -1) 
-            {
-                tableModel.removeRow(tbl_transactions.getSelectedRow());
-                JOptionPane.showMessageDialog(null, "Record deleted!");
-            }
-    }//GEN-LAST:event_btn_deleteRowActionPerformed
+    private void btn_accountsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_accountsActionPerformed
+        new AccountsPage().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btn_accountsActionPerformed
 
     private void btn_editRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editRowActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_editRowActionPerformed
+
+    private void btn_deleteRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteRowActionPerformed
+        DefaultTableModel tableModel = (DefaultTableModel) tbl_transactions.getModel();
+        
+        if(tbl_transactions.getSelectedRow() != -1) {
+                tableModel.removeRow(tbl_transactions.getSelectedRow());
+                JOptionPane.showMessageDialog(null, "Record deleted!");
+        }
+    }//GEN-LAST:event_btn_deleteRowActionPerformed
 
     /**
      * @param args the command line arguments
@@ -264,13 +267,13 @@ public class ManageTransactionsPage extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_accounts;
     private javax.swing.JButton btn_add;
     private javax.swing.JButton btn_dashboard;
     private javax.swing.JButton btn_deleteRow;
     private javax.swing.JButton btn_editRow;
-    private javax.swing.JButton btn_logout;
+    private javax.swing.JButton btn_exit;
     private javax.swing.JButton btn_manage;
-    private javax.swing.JButton btn_overview;
     private javax.swing.JButton btn_search;
     private javax.swing.JComboBox<String> cmb_filter;
     private javax.swing.JPanel jPanel1;
