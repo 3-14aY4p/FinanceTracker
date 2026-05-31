@@ -378,27 +378,29 @@ public final class ManageTransactionsPage extends javax.swing.JFrame {
     }//GEN-LAST:event_cmb_filterActionPerformed
 
     private void btn_deleteAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteAllActionPerformed
-        int retVal = JOptionPane.showConfirmDialog(null, 
-                "Do you want to DELETE this transaction?", 
-                "Delete Transaction", JOptionPane.YES_NO_OPTION);
+        if (!transactions.isEmpty()) {
+            int retVal = JOptionPane.showConfirmDialog(null, 
+                "Do you want to DELETE ALL transactions?", 
+                "Delete ALL Transactions", JOptionPane.YES_NO_OPTION);
         
-        if (retVal == JOptionPane.YES_OPTION) {
-            for (int i = 0; i < transactions.size(); i++) {
-                transactions.get(i).undoTransaction();
-                for (Account ta : transactions.get(i).getAccount()) {
-                    for (Account a : accounts) {
-                        if (ta.getAccountName().equals(a.getAccountName())) {
-                            accounts.set(accounts.indexOf(a), ta);
+            if (retVal == JOptionPane.YES_OPTION) {
+                for (int i = 0; i < transactions.size(); i++) {
+                    transactions.get(i).undoTransaction();
+                    for (Account ta : transactions.get(i).getAccount()) {
+                        for (Account a : accounts) {
+                            if (ta.getAccountName().equals(a.getAccountName())) {
+                                accounts.set(accounts.indexOf(a), ta);
+                            }
                         }
                     }
                 }
-            }
-            transactions.clear();
-            saveAccountsToFile();
-            saveTransactionsToFile();
+                transactions.clear();
+                saveAccountsToFile();
+                saveTransactionsToFile();
 
-            new ManageTransactionsPage().setVisible(true);
-            this.dispose();
+                new ManageTransactionsPage().setVisible(true);
+                this.dispose();
+            }
         }
     }//GEN-LAST:event_btn_deleteAllActionPerformed
 

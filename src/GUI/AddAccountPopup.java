@@ -143,6 +143,7 @@ public class AddAccountPopup extends javax.swing.JFrame {
             accArray.add(new Account(name, balance));
             
             parent.setEnabled(true);
+            parent.saveAccountsToFile();
             this.dispose();
         }
         catch (NumberFormatException e) {

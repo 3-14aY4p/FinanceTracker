@@ -291,11 +291,19 @@ public final class AccountsPage extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_editAccountActionPerformed
 
     private void btn_deleteAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteAllActionPerformed
-        accounts.clear();
-        saveAccountsToFile();
+        if (!accounts.isEmpty()) {
+            int retVal = JOptionPane.showConfirmDialog(null, 
+                "Do you want to DELETE ALL accounts?", 
+                "Delete ALL Accounts", JOptionPane.YES_NO_OPTION);
 
-        new AccountsPage().setVisible(true);
-        this.dispose();
+            if (retVal == JOptionPane.YES_OPTION) {
+                accounts.clear();
+                saveAccountsToFile();
+
+                new AccountsPage().setVisible(true);
+                this.dispose();
+            }
+        }
     }//GEN-LAST:event_btn_deleteAllActionPerformed
 
     

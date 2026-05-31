@@ -158,6 +158,7 @@ public class EditAccountPopup extends javax.swing.JFrame {
             accArray.set(accIndex, selectedAccount);
             
             parent.setEnabled(true);
+            parent.saveAccountsToFile();
             this.dispose();
         }
         catch (NumberFormatException e) {
