@@ -26,6 +26,11 @@ public class IncomeTransaction extends Transaction {
         destination.deposit(this.amount);
     }
     @Override
+    public void undoTransaction() {
+        destination.withdraw(this.amount);
+    }
+    
+    @Override
     public ArrayList<Account> getAccount() {
         ArrayList<Account> accs = new ArrayList<>();
         accs.add(destination);

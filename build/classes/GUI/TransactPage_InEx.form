@@ -282,7 +282,7 @@
             </Constraint>
           </Constraints>
         </Component>
-        <Component class="javax.swing.JLabel" name="lbl_amount1">
+        <Component class="javax.swing.JLabel" name="lbl_account">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Adwaita Mono" size="14" style="0"/>

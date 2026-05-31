@@ -42,6 +42,9 @@ public class Transaction implements Serializable {
 
         */
     }
+    public void undoTransaction() {
+        
+    }
     public ArrayList<Account> getAccount() {
         return null;
     }

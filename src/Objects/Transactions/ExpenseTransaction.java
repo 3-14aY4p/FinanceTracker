@@ -26,6 +26,11 @@ public class ExpenseTransaction extends Transaction {
         source.withdraw(this.amount);
     }
     @Override
+    public void undoTransaction() {
+        source.deposit(this.amount);
+    }
+    
+    @Override
     public ArrayList<Account> getAccount() {
         ArrayList<Account> accs = new ArrayList<>();
         accs.add(source);

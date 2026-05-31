@@ -29,6 +29,12 @@ public class TransferTransaction extends Transaction {
         destination.deposit(this.amount);
     }
     @Override
+    public void undoTransaction() {
+        source.deposit(this.amount);
+        destination.withdraw(this.amount);
+    }
+    
+    @Override
     public ArrayList<Account> getAccount() {
         ArrayList<Account> accs = new ArrayList<>();
         accs.add(source); accs.add(destination);

@@ -275,17 +275,67 @@ public final class ManageTransactionsPage extends javax.swing.JFrame {
 
     private void btn_deleteRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteRowActionPerformed
         if(tbl_transactions.getSelectedRow() != -1) {
-                transactions.remove(tbl_transactions.getSelectedRow());
+            Transaction selectedTran = transactions.get(tbl_transactions.getSelectedRow());
             
-                tableModel.removeRow(tbl_transactions.getSelectedRow());
-                JOptionPane.showMessageDialog(null, "Record deleted!");
+            int retVal = JOptionPane.showConfirmDialog(null, 
+                "Do you want to DELETE this transaction?", 
+                "Delete Transaction", JOptionPane.YES_NO_OPTION);
+        
+            if (retVal == JOptionPane.YES_OPTION) {
+                ArrayList<Account> selectedAcc = selectedTran.getAccount();
                 
+                if (selectedTran instanceof TransferTransaction) {
+                    selectedTran.undoTransaction();
+                    for (Account a : accounts) {
+                        if (selectedAcc.getFirst().getAccountName().equals(a.getAccountName())) {
+                            accounts.set(accounts.indexOf(a), selectedAcc.getFirst());
+                        }
+                        else if (selectedAcc.getLast().getAccountName().equals(a.getAccountName())) {
+                            accounts.set(accounts.indexOf(a), selectedAcc.getLast());
+                        }
+                    }
+                }
+                else {
+                    for (Account a : accounts) {
+                        selectedTran.undoTransaction();
+                        if (selectedTran instanceof ExpenseTransaction) {
+                            if (selectedAcc.getFirst().getAccountName().equals(a.getAccountName())) {
+                                accounts.set(accounts.indexOf(a), selectedAcc.getFirst());
+                                break;
+                            }
+                        }
+                        else if (selectedTran instanceof IncomeTransaction) {
+                            if (selectedAcc.getFirst().getAccountName().equals(a.getAccountName())) {
+                                accounts.set(accounts.indexOf(a), selectedAcc.getFirst());
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                transactions.remove(tbl_transactions.getSelectedRow());
+                tableModel.removeRow(tbl_transactions.getSelectedRow());
+                
+                saveAccountsToFile();
                 saveTransactionsToFile();
+            }
         }
     }//GEN-LAST:event_btn_deleteRowActionPerformed
 
     private void btn_editRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editRowActionPerformed
-        // TODO add your handling code here:
+        if(tbl_transactions.getSelectedRow() != -1) {
+            Transaction selectedTransaction = transactions.get((int) tbl_transactions.getValueAt(tbl_transactions.getSelectedRow(), 0));
+            
+            if (selectedTransaction instanceof ExpenseTransaction) {
+                new EditTransactionPopup_InEx(this, tableModel, transactions, accounts, selectedTransaction, tbl_transactions.getSelectedRow(), 0).setVisible(true);
+            }
+            else if (selectedTransaction instanceof IncomeTransaction) {
+                new EditTransactionPopup_InEx(this, tableModel, transactions, accounts, selectedTransaction, tbl_transactions.getSelectedRow(), 1).setVisible(true);
+            }
+            else if (selectedTransaction instanceof TransferTransaction) {
+                new EditTransactionPopup_Tran(this, tableModel, transactions, accounts, selectedTransaction, tbl_transactions.getSelectedRow()).setVisible(true);
+            }
+        }
     }//GEN-LAST:event_btn_editRowActionPerformed
 
     

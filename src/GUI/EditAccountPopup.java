@@ -16,6 +16,8 @@ import javax.swing.table.*;
  */
 public class EditAccountPopup extends javax.swing.JFrame {
     
+    static AccountsPage parent;
+    
     static DefaultTableModel tableModel;
     static ArrayList<Account> accArray;
     static Account selectedAccount;
@@ -28,9 +30,12 @@ public class EditAccountPopup extends javax.swing.JFrame {
      * @param tableModel
      * @param accArray
      * @param selectedAccount
+     * @param selectedRow
      */
-    public EditAccountPopup(DefaultTableModel tableModel, ArrayList<Account> accArray, Account selectedAccount, int selectedRow) {
+    public EditAccountPopup(AccountsPage parent, DefaultTableModel tableModel, ArrayList<Account> accArray, Account selectedAccount, int selectedRow) {
         initComponents();
+        
+        EditAccountPopup.parent = parent;
         
         EditAccountPopup.tableModel = tableModel;
         EditAccountPopup.accArray = accArray;
@@ -39,6 +44,8 @@ public class EditAccountPopup extends javax.swing.JFrame {
         
         tf_name.setText(selectedAccount.getAccountName());
         tf_balance.setText(String.valueOf(selectedAccount.getBalance()));
+        
+        parent.setEnabled(false);
     }
 
     /**
@@ -57,11 +64,13 @@ public class EditAccountPopup extends javax.swing.JFrame {
         lbl_name = new javax.swing.JLabel();
         tf_balance = new javax.swing.JTextField();
         tf_name = new javax.swing.JTextField();
-        btn_edit = new javax.swing.JButton();
+        btn_confirm = new javax.swing.JButton();
         btn_cancel = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Add Account");
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("Edit Account");
+        setAlwaysOnTop(true);
+        setResizable(false);
         getContentPane().setLayout(null);
 
         jPanel1.setLayout(null);
@@ -91,17 +100,19 @@ public class EditAccountPopup extends javax.swing.JFrame {
         jPanel1.add(tf_name);
         tf_name.setBounds(30, 90, 340, 30);
 
-        btn_edit.setText("EDIT");
-        btn_edit.setContentAreaFilled(false);
-        btn_edit.setFocusPainted(false);
-        btn_edit.addActionListener(new java.awt.event.ActionListener() {
+        btn_confirm.setFont(new java.awt.Font("Adwaita Mono", 0, 13)); // NOI18N
+        btn_confirm.setText("CONFIRM");
+        btn_confirm.setContentAreaFilled(false);
+        btn_confirm.setFocusPainted(false);
+        btn_confirm.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_editActionPerformed(evt);
+                btn_confirmActionPerformed(evt);
             }
         });
-        jPanel1.add(btn_edit);
-        btn_edit.setBounds(160, 200, 100, 30);
+        jPanel1.add(btn_confirm);
+        btn_confirm.setBounds(160, 200, 100, 30);
 
+        btn_cancel.setFont(new java.awt.Font("Adwaita Mono", 0, 13)); // NOI18N
         btn_cancel.setText("CANCEL");
         btn_cancel.setContentAreaFilled(false);
         btn_cancel.setFocusPainted(false);
@@ -114,13 +125,13 @@ public class EditAccountPopup extends javax.swing.JFrame {
         btn_cancel.setBounds(270, 200, 100, 30);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(-1, -1, 400, 270);
+        jPanel1.setBounds(-1, -1, 400, 260);
 
         setSize(new java.awt.Dimension(410, 290));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editActionPerformed
+    private void btn_confirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_confirmActionPerformed
         try {
             String name = tf_name.getText().trim();
             double balance = Double.parseDouble(tf_balance.getText());
@@ -146,16 +157,16 @@ public class EditAccountPopup extends javax.swing.JFrame {
             
             accArray.set(accIndex, selectedAccount);
             
+            parent.setEnabled(true);
             this.dispose();
         }
         catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "[ERR] Cannot parse balance. Please enter a valid number.");
         }
-    }//GEN-LAST:event_btn_editActionPerformed
+    }//GEN-LAST:event_btn_confirmActionPerformed
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
-        
-        
+        parent.setEnabled(true);
         this.dispose();
     }//GEN-LAST:event_btn_cancelActionPerformed
 
@@ -181,12 +192,12 @@ public class EditAccountPopup extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new EditAccountPopup(tableModel, accArray, selectedAccount, selectedRow).setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new EditAccountPopup(parent, tableModel, accArray, selectedAccount, selectedRow).setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_cancel;
-    private javax.swing.JButton btn_edit;
+    private javax.swing.JButton btn_confirm;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lbl_balance;

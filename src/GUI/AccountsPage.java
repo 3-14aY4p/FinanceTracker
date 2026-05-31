@@ -251,7 +251,7 @@ public final class AccountsPage extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_exitActionPerformed
 
     private void btn_addAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addAccountActionPerformed
-        new AddAccountPopup(tableModel, accounts).setVisible(true);
+        new AddAccountPopup(this, tableModel, accounts).setVisible(true);
     }//GEN-LAST:event_btn_addAccountActionPerformed
 
     private void btn_deleteAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteAccountActionPerformed
@@ -273,7 +273,7 @@ public final class AccountsPage extends javax.swing.JFrame {
         if(tbl_accounts.getSelectedRow() != -1) {
             Account selectedAccount = accounts.get(tbl_accounts.getSelectedRow());
 
-            new EditAccountPopup(tableModel, accounts, selectedAccount, tbl_accounts.getSelectedRow()).setVisible(true);
+            new EditAccountPopup(this, tableModel, accounts, selectedAccount, tbl_accounts.getSelectedRow()).setVisible(true);
         }
     }//GEN-LAST:event_btn_editAccountActionPerformed
 

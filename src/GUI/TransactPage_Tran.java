@@ -76,14 +76,14 @@ public final class TransactPage_Tran extends javax.swing.JFrame {
         lbl_amount = new javax.swing.JLabel();
         tf_amount = new javax.swing.JTextField();
         btn_confirm = new javax.swing.JButton();
-        lbl_amount1 = new javax.swing.JLabel();
+        lbl_account2 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         list_destination = new javax.swing.JList<>();
         cmb_type = new javax.swing.JComboBox<>();
         jScrollPane3 = new javax.swing.JScrollPane();
         list_source = new javax.swing.JList<>();
         lbl_amount2 = new javax.swing.JLabel();
-        lbl_amount3 = new javax.swing.JLabel();
+        lbl_account1 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -210,10 +210,10 @@ public final class TransactPage_Tran extends javax.swing.JFrame {
         jPanel2.add(btn_confirm);
         btn_confirm.setBounds(470, 240, 110, 30);
 
-        lbl_amount1.setFont(new java.awt.Font("Adwaita Mono", 0, 12)); // NOI18N
-        lbl_amount1.setText("TO ACCOUNT");
-        jPanel2.add(lbl_amount1);
-        lbl_amount1.setBounds(30, 260, 100, 30);
+        lbl_account2.setFont(new java.awt.Font("Adwaita Mono", 0, 12)); // NOI18N
+        lbl_account2.setText("TO ACCOUNT");
+        jPanel2.add(lbl_account2);
+        lbl_account2.setBounds(30, 260, 100, 30);
 
         list_destination.setFont(new java.awt.Font("Adwaita Mono", 0, 13)); // NOI18N
         list_destination.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -245,10 +245,10 @@ public final class TransactPage_Tran extends javax.swing.JFrame {
         jPanel2.add(lbl_amount2);
         lbl_amount2.setBounds(30, 70, 100, 30);
 
-        lbl_amount3.setFont(new java.awt.Font("Adwaita Mono", 0, 12)); // NOI18N
-        lbl_amount3.setText("FROM ACCOUNT");
-        jPanel2.add(lbl_amount3);
-        lbl_amount3.setBounds(30, 110, 100, 30);
+        lbl_account1.setFont(new java.awt.Font("Adwaita Mono", 0, 12)); // NOI18N
+        lbl_account1.setText("FROM ACCOUNT");
+        jPanel2.add(lbl_account1);
+        lbl_account1.setBounds(30, 110, 100, 30);
         jPanel2.add(jSeparator2);
         jSeparator2.setBounds(30, 100, 100, 20);
 
@@ -337,11 +337,11 @@ public final class TransactPage_Tran extends javax.swing.JFrame {
             }
 
             if (amnt > accSrc.getBalance()) {
-                JOptionPane.showMessageDialog(null, "[ERR] Invalid amount. Please recheck your balance.");
+                JOptionPane.showMessageDialog(null, "[ERR] Invalid amount. Insufficient balance.");
                 return;
             }
             else if (amnt <= 0) {
-                JOptionPane.showMessageDialog(null, "[ERR] Invalid amount. Can't deposit negative number.");
+                JOptionPane.showMessageDialog(null, "[ERR] Invalid amount. Amount must be greater than zero.");
                 return;
             }
             
@@ -495,10 +495,10 @@ public final class TransactPage_Tran extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JLabel lbl_account1;
+    private javax.swing.JLabel lbl_account2;
     private javax.swing.JLabel lbl_amount;
-    private javax.swing.JLabel lbl_amount1;
     private javax.swing.JLabel lbl_amount2;
-    private javax.swing.JLabel lbl_amount3;
     private javax.swing.JLabel lbl_appName;
     private javax.swing.JLabel lbl_date;
     private javax.swing.JLabel lbl_description;

@@ -45,6 +45,7 @@ public final class TransactPage_InEx extends javax.swing.JFrame {
         for (Account a : accounts) {
             listModel.addElement(a.getAccountName());
         }
+        list_account.updateUI();
     }
 
     /**
@@ -74,7 +75,7 @@ public final class TransactPage_InEx extends javax.swing.JFrame {
         lbl_amount = new javax.swing.JLabel();
         tf_amount = new javax.swing.JTextField();
         btn_confirm = new javax.swing.JButton();
-        lbl_amount1 = new javax.swing.JLabel();
+        lbl_account = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         list_account = new javax.swing.JList<>();
         cmb_type = new javax.swing.JComboBox<>();
@@ -203,10 +204,10 @@ public final class TransactPage_InEx extends javax.swing.JFrame {
         jPanel2.add(btn_confirm);
         btn_confirm.setBounds(470, 240, 110, 30);
 
-        lbl_amount1.setFont(new java.awt.Font("Adwaita Mono", 0, 14)); // NOI18N
-        lbl_amount1.setText("ACCOUNT");
-        jPanel2.add(lbl_amount1);
-        lbl_amount1.setBounds(30, 70, 100, 30);
+        lbl_account.setFont(new java.awt.Font("Adwaita Mono", 0, 14)); // NOI18N
+        lbl_account.setText("ACCOUNT");
+        jPanel2.add(lbl_account);
+        lbl_account.setBounds(30, 70, 100, 30);
 
         list_account.setFont(new java.awt.Font("Adwaita Mono", 0, 13)); // NOI18N
         list_account.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
@@ -278,8 +279,8 @@ public final class TransactPage_InEx extends javax.swing.JFrame {
         try {
             int t_id = transactions.size();
             for (Transaction t : transactions) {
-                if (t.getTransactionID() > t_id) {
-                    t_id = t.getTransactionID();
+                if (t.getTransactionID() + 1 > t_id) {
+                    t_id = t.getTransactionID() + 1;
                 }
             }
             
@@ -297,19 +298,18 @@ public final class TransactPage_InEx extends javax.swing.JFrame {
                 }
             }
 
-            if (transactionType.equals("expense") && amnt > acc.getBalance()) {
-                JOptionPane.showMessageDialog(null, "[ERR] Invalid amount. Please recheck your balance.");
-                return;
-            }
-            else if (transactionType.equals("income") && amnt <= 0) {
-                JOptionPane.showMessageDialog(null, "[ERR] Invalid amount. Can't deposit negative number.");
-                return;
-            }
-            
             if (transactionType.equals("expense")) {
+                if (amnt > acc.getBalance()) {
+                    JOptionPane.showMessageDialog(null, "[ERR] Invalid amount. Insufficient balance.");
+                    return;
+                }
                 currentTransaction = new ExpenseTransaction(t_id, date, amnt, desc, acc);
             }
             else if (transactionType.equals("income")) {
+                if (amnt <= 0) {
+                    JOptionPane.showMessageDialog(null, "[ERR] Invalid amount. Amount must be greater than zero.");
+                    return;
+                }
                 currentTransaction = new IncomeTransaction(t_id, date, amnt, desc, acc);
             }
 
@@ -456,8 +456,8 @@ public final class TransactPage_InEx extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel lbl_account;
     private javax.swing.JLabel lbl_amount;
-    private javax.swing.JLabel lbl_amount1;
     private javax.swing.JLabel lbl_appName;
     private javax.swing.JLabel lbl_date;
     private javax.swing.JLabel lbl_description;

@@ -16,6 +16,8 @@ import javax.swing.table.*;
  */
 public class AddAccountPopup extends javax.swing.JFrame {
     
+    static AccountsPage parent;
+    
     static DefaultTableModel tableModel;
     static ArrayList<Account> accArray;
     
@@ -26,11 +28,15 @@ public class AddAccountPopup extends javax.swing.JFrame {
      * @param tableModel
      * @param accArray
      */
-    public AddAccountPopup(DefaultTableModel tableModel, ArrayList<Account> accArray) {
+    public AddAccountPopup(AccountsPage parent, DefaultTableModel tableModel, ArrayList<Account> accArray) {
         initComponents();
+        
+        AddAccountPopup.parent = parent;
         
         AddAccountPopup.tableModel = tableModel;
         AddAccountPopup.accArray = accArray;
+        
+        parent.setEnabled(false);
     }
 
     /**
@@ -52,8 +58,10 @@ public class AddAccountPopup extends javax.swing.JFrame {
         btn_add = new javax.swing.JButton();
         btn_cancel = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("Add Account");
+        setAlwaysOnTop(true);
+        setResizable(false);
         getContentPane().setLayout(null);
 
         jPanel1.setLayout(null);
@@ -83,6 +91,7 @@ public class AddAccountPopup extends javax.swing.JFrame {
         jPanel1.add(tf_name);
         tf_name.setBounds(30, 90, 340, 30);
 
+        btn_add.setFont(new java.awt.Font("Adwaita Mono", 0, 13)); // NOI18N
         btn_add.setText("ADD");
         btn_add.setContentAreaFilled(false);
         btn_add.setFocusPainted(false);
@@ -94,6 +103,7 @@ public class AddAccountPopup extends javax.swing.JFrame {
         jPanel1.add(btn_add);
         btn_add.setBounds(160, 200, 100, 30);
 
+        btn_cancel.setFont(new java.awt.Font("Adwaita Mono", 0, 13)); // NOI18N
         btn_cancel.setText("CANCEL");
         btn_cancel.setContentAreaFilled(false);
         btn_cancel.setFocusPainted(false);
@@ -106,7 +116,7 @@ public class AddAccountPopup extends javax.swing.JFrame {
         btn_cancel.setBounds(270, 200, 100, 30);
 
         getContentPane().add(jPanel1);
-        jPanel1.setBounds(-1, -1, 400, 270);
+        jPanel1.setBounds(-1, -1, 400, 260);
 
         setSize(new java.awt.Dimension(410, 290));
         setLocationRelativeTo(null);
@@ -132,6 +142,7 @@ public class AddAccountPopup extends javax.swing.JFrame {
             tableModel.addRow(rowData);
             accArray.add(new Account(name, balance));
             
+            parent.setEnabled(true);
             this.dispose();
         }
         catch (NumberFormatException e) {
@@ -140,6 +151,7 @@ public class AddAccountPopup extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_addActionPerformed
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
+        parent.setEnabled(true);
         this.dispose();
     }//GEN-LAST:event_btn_cancelActionPerformed
 
@@ -165,7 +177,7 @@ public class AddAccountPopup extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new AddAccountPopup(tableModel, accArray).setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new AddAccountPopup(parent, tableModel, accArray).setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
