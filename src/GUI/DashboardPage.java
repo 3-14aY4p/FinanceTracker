@@ -254,7 +254,7 @@ public final class DashboardPage extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tbl_transactions);
 
         jPanel2.add(jScrollPane1);
-        jScrollPane1.setBounds(30, 240, 550, 220);
+        jScrollPane1.setBounds(30, 240, 550, 210);
 
         lbl_balance.setFont(new java.awt.Font("Adwaita Mono", 0, 24)); // NOI18N
         lbl_balance.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);

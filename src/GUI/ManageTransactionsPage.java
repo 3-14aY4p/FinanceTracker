@@ -12,6 +12,8 @@ import java.text.*;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.util.*;
+import java.util.regex.*;
+import javax.swing.event.*;
 
 /**
  *
@@ -88,11 +90,12 @@ public final class ManageTransactionsPage extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         tf_search = new javax.swing.JTextField();
         cmb_filter = new javax.swing.JComboBox<>();
-        btn_search = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_transactions = new javax.swing.JTable();
+        btn_deleteAll = new javax.swing.JButton();
         btn_deleteRow = new javax.swing.JButton();
         btn_editRow = new javax.swing.JButton();
+        btn_clearSearch = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("MFinance Tracker");
@@ -179,19 +182,17 @@ public final class ManageTransactionsPage extends javax.swing.JFrame {
 
         tf_search.setFont(new java.awt.Font("Adwaita Mono", 0, 13)); // NOI18N
         jPanel2.add(tf_search);
-        tf_search.setBounds(30, 80, 220, 30);
+        tf_search.setBounds(30, 80, 240, 30);
 
         cmb_filter.setFont(new java.awt.Font("Adwaita Mono", 0, 13)); // NOI18N
         cmb_filter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Date", "Amount", "Type", "Description", "Account" }));
+        cmb_filter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmb_filterActionPerformed(evt);
+            }
+        });
         jPanel2.add(cmb_filter);
-        cmb_filter.setBounds(260, 80, 110, 30);
-
-        btn_search.setFont(new java.awt.Font("Adwaita Mono", 0, 13)); // NOI18N
-        btn_search.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/search.png"))); // NOI18N
-        btn_search.setText("Search");
-        btn_search.setContentAreaFilled(false);
-        jPanel2.add(btn_search);
-        btn_search.setBounds(467, 80, 110, 30);
+        cmb_filter.setBounds(280, 80, 110, 30);
 
         tbl_transactions.setAutoCreateRowSorter(true);
         tbl_transactions.setFont(new java.awt.Font("Adwaita Mono", 0, 13)); // NOI18N
@@ -223,29 +224,55 @@ public final class ManageTransactionsPage extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tbl_transactions);
 
         jPanel2.add(jScrollPane1);
-        jScrollPane1.setBounds(30, 130, 550, 290);
+        jScrollPane1.setBounds(30, 130, 550, 270);
+
+        btn_deleteAll.setFont(new java.awt.Font("Adwaita Mono", 0, 13)); // NOI18N
+        btn_deleteAll.setText("Clear");
+        btn_deleteAll.setContentAreaFilled(false);
+        btn_deleteAll.setFocusPainted(false);
+        btn_deleteAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_deleteAllActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btn_deleteAll);
+        btn_deleteAll.setBounds(30, 420, 110, 30);
 
         btn_deleteRow.setFont(new java.awt.Font("Adwaita Mono", 0, 13)); // NOI18N
         btn_deleteRow.setText("Delete");
         btn_deleteRow.setContentAreaFilled(false);
+        btn_deleteRow.setFocusPainted(false);
         btn_deleteRow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_deleteRowActionPerformed(evt);
             }
         });
         jPanel2.add(btn_deleteRow);
-        btn_deleteRow.setBounds(470, 430, 110, 30);
+        btn_deleteRow.setBounds(470, 420, 110, 30);
 
         btn_editRow.setFont(new java.awt.Font("Adwaita Mono", 0, 13)); // NOI18N
         btn_editRow.setText("Edit");
         btn_editRow.setContentAreaFilled(false);
+        btn_editRow.setFocusPainted(false);
         btn_editRow.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_editRowActionPerformed(evt);
             }
         });
         jPanel2.add(btn_editRow);
-        btn_editRow.setBounds(350, 430, 110, 30);
+        btn_editRow.setBounds(350, 420, 110, 30);
+
+        btn_clearSearch.setFont(new java.awt.Font("Adwaita Mono", 0, 13)); // NOI18N
+        btn_clearSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/list-x.png"))); // NOI18N
+        btn_clearSearch.setContentAreaFilled(false);
+        btn_clearSearch.setFocusPainted(false);
+        btn_clearSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_clearSearchActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btn_clearSearch);
+        btn_clearSearch.setBounds(550, 80, 30, 30);
 
         getContentPane().add(jPanel2);
         jPanel2.setBounds(170, 0, 610, 480);
@@ -338,7 +365,63 @@ public final class ManageTransactionsPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_editRowActionPerformed
 
-    
+    private void btn_clearSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_clearSearchActionPerformed
+        cmb_filter.setSelectedIndex(0);
+        tf_search.setText("");
+    }//GEN-LAST:event_btn_clearSearchActionPerformed
+
+    private void cmb_filterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmb_filterActionPerformed
+        TableRowSorter<TableModel> rowSorter = new TableRowSorter<>(tbl_transactions.getModel());
+        tbl_transactions.setRowSorter(rowSorter);
+        
+        int category = cmb_filter.getSelectedIndex() + 1;
+        addFilter(tbl_transactions, tf_search, category);
+    }//GEN-LAST:event_cmb_filterActionPerformed
+
+    private void btn_deleteAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteAllActionPerformed
+        transactions.clear();
+        saveTransactionsToFile();
+        
+        new ManageTransactionsPage().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btn_deleteAllActionPerformed
+
+
+    public static void addFilter(JTable tbl, JTextField txtSearch, int SearchColumnIndex) {
+        DefaultTableModel model = (DefaultTableModel) tbl.getModel();
+
+        final TableRowSorter< DefaultTableModel> sorter = new TableRowSorter< DefaultTableModel>(model);
+        tbl.setRowSorter(sorter);
+
+        txtSearch.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                OnChange();
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                OnChange();
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                OnChange();
+            }
+            public void OnChange() {
+                var txt = txtSearch.getText().toLowerCase();
+                if (txt.length() == 0) {
+                    sorter.setRowFilter(null);
+                } else {
+                    try {
+                        sorter.setRowFilter(RowFilter.regexFilter("^(?i)" + txt, SearchColumnIndex));
+                    } catch (PatternSyntaxException pse) {
+                        System.out.println("Bad regex pattern");
+                    }
+                }
+
+            }
+        });
+    }
+
     public void saveAccountsToFile() {
         try {
             FileOutputStream file = new FileOutputStream("Accounts.dat");
@@ -445,12 +528,13 @@ public final class ManageTransactionsPage extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_accounts;
     private javax.swing.JButton btn_add;
+    private javax.swing.JButton btn_clearSearch;
     private javax.swing.JButton btn_dashboard;
+    private javax.swing.JButton btn_deleteAll;
     private javax.swing.JButton btn_deleteRow;
     private javax.swing.JButton btn_editRow;
     private javax.swing.JButton btn_exit;
     private javax.swing.JButton btn_manage;
-    private javax.swing.JButton btn_search;
     private javax.swing.JComboBox<String> cmb_filter;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

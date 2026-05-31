@@ -62,6 +62,7 @@ public final class AccountsPage extends javax.swing.JFrame {
         btn_addAccount = new javax.swing.JButton();
         btn_editAccount = new javax.swing.JButton();
         btn_deleteAccount = new javax.swing.JButton();
+        btn_deleteAll = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("MFinance Tracker");
@@ -202,7 +203,7 @@ public final class AccountsPage extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btn_editAccount);
-        btn_editAccount.setBounds(460, 140, 120, 30);
+        btn_editAccount.setBounds(460, 180, 120, 30);
 
         btn_deleteAccount.setFont(new java.awt.Font("Adwaita Mono", 0, 13)); // NOI18N
         btn_deleteAccount.setText("Delete");
@@ -214,7 +215,19 @@ public final class AccountsPage extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btn_deleteAccount);
-        btn_deleteAccount.setBounds(460, 350, 120, 30);
+        btn_deleteAccount.setBounds(460, 140, 120, 30);
+
+        btn_deleteAll.setFont(new java.awt.Font("Adwaita Mono", 0, 12)); // NOI18N
+        btn_deleteAll.setText("Clear");
+        btn_deleteAll.setContentAreaFilled(false);
+        btn_deleteAll.setFocusPainted(false);
+        btn_deleteAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_deleteAllActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btn_deleteAll);
+        btn_deleteAll.setBounds(460, 350, 120, 30);
 
         getContentPane().add(jPanel2);
         jPanel2.setBounds(170, 0, 610, 480);
@@ -277,13 +290,21 @@ public final class AccountsPage extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_editAccountActionPerformed
 
+    private void btn_deleteAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteAllActionPerformed
+        accounts.clear();
+        saveAccountsToFile();
+
+        new AccountsPage().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btn_deleteAllActionPerformed
+
     
     public void saveAccountsToFile() {
         try {
             FileOutputStream file = new FileOutputStream("Accounts.dat");
             ObjectOutputStream outputFile = new ObjectOutputStream(file);
             
-            for (int i = 0; i < tbl_accounts.getRowCount(); i++) {
+            for (int i = 0; i < accounts.size(); i++) {
                 outputFile.writeObject(accounts.get(i));
             }
             outputFile.close();
@@ -350,6 +371,7 @@ public final class AccountsPage extends javax.swing.JFrame {
     private javax.swing.JButton btn_addAccount;
     private javax.swing.JButton btn_dashboard;
     private javax.swing.JButton btn_deleteAccount;
+    private javax.swing.JButton btn_deleteAll;
     private javax.swing.JButton btn_editAccount;
     private javax.swing.JButton btn_exit;
     private javax.swing.JButton btn_manage;
