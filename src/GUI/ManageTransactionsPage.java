@@ -67,6 +67,8 @@ public final class ManageTransactionsPage extends javax.swing.JFrame {
             Object[] rowData = {t.getTransactionID(), date, t.getAmount(), type, t.getDescription(), account};
             tableModel.addRow(rowData);
         }
+        
+        addFilter(tbl_transactions, tf_search, 0);
     }
 
     /**
@@ -311,8 +313,8 @@ public final class ManageTransactionsPage extends javax.swing.JFrame {
             if (retVal == JOptionPane.YES_OPTION) {
                 ArrayList<Account> selectedAcc = selectedTran.getAccount();
                 
+                selectedTran.undoTransaction();
                 if (selectedTran instanceof TransferTransaction) {
-                    selectedTran.undoTransaction();
                     for (Account a : accounts) {
                         if (selectedAcc.getFirst().getAccountName().equals(a.getAccountName())) {
                             accounts.set(accounts.indexOf(a), selectedAcc.getFirst());
@@ -324,17 +326,14 @@ public final class ManageTransactionsPage extends javax.swing.JFrame {
                 }
                 else {
                     for (Account a : accounts) {
-                        selectedTran.undoTransaction();
                         if (selectedTran instanceof ExpenseTransaction) {
                             if (selectedAcc.getFirst().getAccountName().equals(a.getAccountName())) {
                                 accounts.set(accounts.indexOf(a), selectedAcc.getFirst());
-                                break;
                             }
                         }
                         else if (selectedTran instanceof IncomeTransaction) {
                             if (selectedAcc.getFirst().getAccountName().equals(a.getAccountName())) {
                                 accounts.set(accounts.indexOf(a), selectedAcc.getFirst());
-                                break;
                             }
                         }
                     }
@@ -379,11 +378,28 @@ public final class ManageTransactionsPage extends javax.swing.JFrame {
     }//GEN-LAST:event_cmb_filterActionPerformed
 
     private void btn_deleteAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteAllActionPerformed
-        transactions.clear();
-        saveTransactionsToFile();
+        int retVal = JOptionPane.showConfirmDialog(null, 
+                "Do you want to DELETE this transaction?", 
+                "Delete Transaction", JOptionPane.YES_NO_OPTION);
         
-        new ManageTransactionsPage().setVisible(true);
-        this.dispose();
+        if (retVal == JOptionPane.YES_OPTION) {
+            for (int i = 0; i < transactions.size(); i++) {
+                transactions.get(i).undoTransaction();
+                for (Account ta : transactions.get(i).getAccount()) {
+                    for (Account a : accounts) {
+                        if (ta.getAccountName().equals(a.getAccountName())) {
+                            accounts.set(accounts.indexOf(a), ta);
+                        }
+                    }
+                }
+            }
+            transactions.clear();
+            saveAccountsToFile();
+            saveTransactionsToFile();
+
+            new ManageTransactionsPage().setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_btn_deleteAllActionPerformed
 
 
