@@ -8,6 +8,7 @@ import Objects.BaseClasses.*;
 import Objects.Transactions.*;
 
 import java.io.*;
+import java.text.*;
 import java.util.*;
 import javax.swing.*;
 
@@ -309,6 +310,12 @@ public final class TransactPage_Tran extends javax.swing.JFrame {
         
         try {
             int t_id = transactions.size();
+            for (Transaction t : transactions) {
+                if (t.getTransactionID() > t_id) {
+                    t_id = t.getTransactionID();
+                }
+            }
+            
             Date date = dc_date.getDate();
             double amnt = Double.parseDouble(tf_amount.getText());
             String desc = tf_description.getText();
@@ -341,6 +348,8 @@ public final class TransactPage_Tran extends javax.swing.JFrame {
             currentTransaction = new TransferTransaction(t_id, date, amnt, desc, accSrc, accDst);
 
             currentTransaction.confirmTransaction();
+            transactions.add(currentTransaction);
+            
             accSrc = currentTransaction.getAccount().getFirst();
             accDst = currentTransaction.getAccount().getLast();
             accounts.set(accIndexSrc, accSrc);

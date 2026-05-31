@@ -4,14 +4,24 @@
  */
 package GUI;
 
+import Objects.BaseClasses.*;
+import Objects.Transactions.*;
+
+import java.io.*;
+import java.text.*;
 import javax.swing.*;
 import javax.swing.table.*;
+import java.util.*;
 
 /**
  *
  * @author tianye
  */
-public class ManageTransactionsPage extends javax.swing.JFrame {
+public final class ManageTransactionsPage extends javax.swing.JFrame {
+    
+    DefaultTableModel tableModel;
+    ArrayList<Account> accounts;
+    ArrayList<Transaction> transactions;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ManageTransactionsPage.class.getName());
 
@@ -20,6 +30,41 @@ public class ManageTransactionsPage extends javax.swing.JFrame {
      */
     public ManageTransactionsPage() {
         initComponents();
+        
+        tableModel = (DefaultTableModel) tbl_transactions.getModel();
+        
+        accounts = new ArrayList<>();
+        transactions = new ArrayList<>();
+        populateArrayList();
+        
+        for (Transaction t : transactions) {
+            String date = "";
+            String type = "";
+            String account = "";
+            
+            if (t instanceof ExpenseTransaction) {
+                type = "expense";
+                account = t.getAccount().getFirst().getAccountName();
+            }
+            else if (t instanceof IncomeTransaction) {
+                type = "income";
+                account = t.getAccount().getFirst().getAccountName();
+            }
+            else if (t instanceof TransferTransaction) {
+                type = "transfer";
+                
+                String src = t.getAccount().getFirst().getAccountName();
+                String dst = t.getAccount().getLast().getAccountName();
+                
+                account = String.format("%s ---> %s", src, dst);
+            }
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, yyyy-MM-dd");
+            date = sdf.format(t.getDate());
+            
+            Object[] rowData = {t.getTransactionID(), date, t.getAmount(), type, t.getDescription(), account};
+            tableModel.addRow(rowData);
+        }
     }
 
     /**
@@ -159,7 +204,7 @@ public class ManageTransactionsPage extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Float.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Object.class, java.lang.String.class, java.lang.Float.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false, false, false, false
@@ -228,19 +273,100 @@ public class ManageTransactionsPage extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btn_accountsActionPerformed
 
+    private void btn_deleteRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteRowActionPerformed
+        if(tbl_transactions.getSelectedRow() != -1) {
+                transactions.remove(tbl_transactions.getSelectedRow());
+            
+                tableModel.removeRow(tbl_transactions.getSelectedRow());
+                JOptionPane.showMessageDialog(null, "Record deleted!");
+                
+                saveTransactionsToFile();
+        }
+    }//GEN-LAST:event_btn_deleteRowActionPerformed
+
     private void btn_editRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editRowActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btn_editRowActionPerformed
 
-    private void btn_deleteRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_deleteRowActionPerformed
-        DefaultTableModel tableModel = (DefaultTableModel) tbl_transactions.getModel();
-        
-        if(tbl_transactions.getSelectedRow() != -1) {
-                tableModel.removeRow(tbl_transactions.getSelectedRow());
-                JOptionPane.showMessageDialog(null, "Record deleted!");
+    
+    public void saveAccountsToFile() {
+        try {
+            FileOutputStream file = new FileOutputStream("Accounts.dat");
+            ObjectOutputStream outputFile = new ObjectOutputStream(file);
+            
+            for (int i = 0; i < accounts.size(); i++) {
+                outputFile.writeObject(accounts.get(i));
+            }
+            outputFile.close();
+        } 
+        catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            
         }
-    }//GEN-LAST:event_btn_deleteRowActionPerformed
-
+    }
+    public void saveTransactionsToFile() {
+        try {
+            FileOutputStream file = new FileOutputStream("Transactions.dat");
+            ObjectOutputStream outputFile = new ObjectOutputStream(file);
+            
+            for (int i = 0; i < transactions.size(); i++) {
+                outputFile.writeObject(transactions.get(i));
+            }
+            outputFile.close();
+        } 
+        catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            
+        }
+    }
+    public void populateArrayList() {
+        try {
+            FileInputStream file = new FileInputStream("Accounts.dat");
+            ObjectInputStream inputFile = new ObjectInputStream(file);
+            
+            boolean endOfFile = false;
+            
+            while (!endOfFile) {                
+                try {
+                    accounts.add((Account) inputFile.readObject());
+                } 
+                catch (EOFException e) {
+                    endOfFile = true;
+                }
+                catch (IOException | ClassNotFoundException f) {
+                    JOptionPane.showMessageDialog(null, f.getMessage());
+                }
+            }
+            inputFile.close();
+        } 
+        catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        
+        try {
+            FileInputStream file2 = new FileInputStream("Transactions.dat");
+            ObjectInputStream inputFile2 = new ObjectInputStream(file2);
+            
+            boolean endOfFile = false;
+            
+            while (!endOfFile) {                
+                try {
+                    transactions.add((Transaction) inputFile2.readObject());
+                } 
+                catch (EOFException e) {
+                    endOfFile = true;
+                }
+                catch (IOException | ClassNotFoundException f) {
+                    JOptionPane.showMessageDialog(null, f.getMessage());
+                }
+            }
+            inputFile2.close();
+        } 
+        catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */

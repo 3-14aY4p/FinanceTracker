@@ -1,5 +1,14 @@
 package GUI;
 
+import Objects.BaseClasses.*;
+import Objects.Transactions.*;
+
+import java.io.*;
+import java.text.*;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.table.*;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -9,8 +18,12 @@ package GUI;
  *
  * @author tianye
  */
-public class DashboardPage extends javax.swing.JFrame {
-    
+public final class DashboardPage extends javax.swing.JFrame {
+        
+    DefaultTableModel tableModel;
+    ArrayList<Account> accounts;
+    ArrayList<Transaction> transactions;
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DashboardPage.class.getName());
 
     /**
@@ -18,6 +31,61 @@ public class DashboardPage extends javax.swing.JFrame {
      */
     public DashboardPage() {
         initComponents();
+        
+        tableModel = (DefaultTableModel) tbl_transactions.getModel();
+        
+        accounts = new ArrayList<>();
+        transactions = new ArrayList<>();
+        populateArrayList();
+        
+        double totIncome = 0;
+        double totExpense = 0;
+        double totBalance = 0;
+        double netIncome;
+    
+        for (Transaction t : transactions) {
+            String date = "";
+            String type = "";
+            String account = "";
+            
+            if (t instanceof ExpenseTransaction) {
+                type = "expense";
+                account = t.getAccount().getFirst().getAccountName();
+                
+                totExpense += t.getAmount();
+            }
+            else if (t instanceof IncomeTransaction) {
+                type = "income";
+                account = t.getAccount().getFirst().getAccountName();
+                
+                totIncome += t.getAmount();
+            }
+            else if (t instanceof TransferTransaction) {
+                type = "transfer";
+                
+                String src = t.getAccount().getFirst().getAccountName();
+                String dst = t.getAccount().getLast().getAccountName();
+                
+                account = String.format("%s ---> %s", src, dst);
+            }
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, yyyy-MM-dd");
+            date = sdf.format(t.getDate());
+            
+            Object[] rowData = {t.getTransactionID(), date, t.getAmount(), type, t.getDescription(), account};
+            tableModel.addRow(rowData);
+        }
+        
+        for (Account a : accounts) {
+            totBalance += a.getBalance();
+        }
+        
+        netIncome = (totIncome - totExpense);
+        
+        lbl_balance.setText(String.valueOf(totBalance));
+        lbl_netIncome.setText(String.valueOf(netIncome));
+        lbl_income.setText(String.valueOf(totIncome));
+        lbl_expense.setText(String.valueOf(totExpense));
     }
 
     /**
@@ -45,6 +113,7 @@ public class DashboardPage extends javax.swing.JFrame {
         lbl_title2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_transactions = new javax.swing.JTable();
+        lbl_balance = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("MFinance Tracker");
@@ -134,21 +203,21 @@ public class DashboardPage extends javax.swing.JFrame {
         lbl_netIncome.setText("0");
         lbl_netIncome.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "NET INCOME", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Adwaita Mono", 1, 13))); // NOI18N
         jPanel2.add(lbl_netIncome);
-        lbl_netIncome.setBounds(30, 80, 170, 100);
+        lbl_netIncome.setBounds(410, 80, 170, 100);
 
-        lbl_income.setFont(new java.awt.Font("Adwaita Mono", 0, 24)); // NOI18N
+        lbl_income.setFont(new java.awt.Font("Adwaita Mono", 0, 18)); // NOI18N
         lbl_income.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_income.setText("0");
         lbl_income.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "TOTAL INCOME", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Adwaita Mono", 1, 13))); // NOI18N
         jPanel2.add(lbl_income);
-        lbl_income.setBounds(220, 80, 170, 100);
+        lbl_income.setBounds(220, 130, 170, 50);
 
-        lbl_expense.setFont(new java.awt.Font("Adwaita Mono", 0, 24)); // NOI18N
+        lbl_expense.setFont(new java.awt.Font("Adwaita Mono", 0, 18)); // NOI18N
         lbl_expense.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbl_expense.setText("0");
         lbl_expense.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "TOTAL EXPENSE", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Adwaita Mono", 1, 13))); // NOI18N
         jPanel2.add(lbl_expense);
-        lbl_expense.setBounds(410, 80, 170, 100);
+        lbl_expense.setBounds(220, 80, 170, 50);
 
         lbl_title2.setFont(new java.awt.Font("Adwaita Mono", 1, 18)); // NOI18N
         lbl_title2.setText("RECENT TRANSACTIONS");
@@ -187,6 +256,13 @@ public class DashboardPage extends javax.swing.JFrame {
         jPanel2.add(jScrollPane1);
         jScrollPane1.setBounds(30, 240, 550, 220);
 
+        lbl_balance.setFont(new java.awt.Font("Adwaita Mono", 0, 24)); // NOI18N
+        lbl_balance.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbl_balance.setText("0");
+        lbl_balance.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createEtchedBorder(), "TOTAL BALANCE", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Adwaita Mono", 1, 13))); // NOI18N
+        jPanel2.add(lbl_balance);
+        lbl_balance.setBounds(30, 80, 170, 100);
+
         getContentPane().add(jPanel2);
         jPanel2.setBounds(170, 0, 610, 480);
 
@@ -213,6 +289,85 @@ public class DashboardPage extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_btn_exitActionPerformed
 
+    
+    public void saveAccountsToFile() {
+        try {
+            FileOutputStream file = new FileOutputStream("Accounts.dat");
+            ObjectOutputStream outputFile = new ObjectOutputStream(file);
+            
+            for (int i = 0; i < accounts.size(); i++) {
+                outputFile.writeObject(accounts.get(i));
+            }
+            outputFile.close();
+        } 
+        catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            
+        }
+    }
+    public void saveTransactionsToFile() {
+        try {
+            FileOutputStream file = new FileOutputStream("Transactions.dat");
+            ObjectOutputStream outputFile = new ObjectOutputStream(file);
+            
+            for (int i = 0; i < transactions.size(); i++) {
+                outputFile.writeObject(transactions.get(i));
+            }
+            outputFile.close();
+        } 
+        catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+            
+        }
+    }
+    public void populateArrayList() {
+        try {
+            FileInputStream file = new FileInputStream("Accounts.dat");
+            ObjectInputStream inputFile = new ObjectInputStream(file);
+            
+            boolean endOfFile = false;
+            
+            while (!endOfFile) {                
+                try {
+                    accounts.add((Account) inputFile.readObject());
+                } 
+                catch (EOFException e) {
+                    endOfFile = true;
+                }
+                catch (IOException | ClassNotFoundException f) {
+                    JOptionPane.showMessageDialog(null, f.getMessage());
+                }
+            }
+            inputFile.close();
+        } 
+        catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        
+        try {
+            FileInputStream file2 = new FileInputStream("Transactions.dat");
+            ObjectInputStream inputFile2 = new ObjectInputStream(file2);
+            
+            boolean endOfFile = false;
+            
+            while (!endOfFile) {                
+                try {
+                    transactions.add((Transaction) inputFile2.readObject());
+                } 
+                catch (EOFException e) {
+                    endOfFile = true;
+                }
+                catch (IOException | ClassNotFoundException f) {
+                    JOptionPane.showMessageDialog(null, f.getMessage());
+                }
+            }
+            inputFile2.close();
+        } 
+        catch (IOException e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -249,6 +404,7 @@ public class DashboardPage extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lbl_appName;
+    private javax.swing.JLabel lbl_balance;
     private javax.swing.JLabel lbl_expense;
     private javax.swing.JLabel lbl_income;
     private javax.swing.JLabel lbl_netIncome;

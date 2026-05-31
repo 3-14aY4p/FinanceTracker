@@ -14,23 +14,31 @@ import javax.swing.table.*;
  *
  * @author tianye
  */
-public class AddAccountPopup extends javax.swing.JFrame {
+public class EditAccountPopup extends javax.swing.JFrame {
     
     static DefaultTableModel tableModel;
     static ArrayList<Account> accArray;
+    static Account selectedAccount;
+    static int selectedRow;
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(AddAccountPopup.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(EditAccountPopup.class.getName());
 
     /**
      * Creates new form AddAccountPopup
      * @param tableModel
      * @param accArray
+     * @param selectedAccount
      */
-    public AddAccountPopup(DefaultTableModel tableModel, ArrayList<Account> accArray) {
+    public EditAccountPopup(DefaultTableModel tableModel, ArrayList<Account> accArray, Account selectedAccount, int selectedRow) {
         initComponents();
         
-        AddAccountPopup.tableModel = tableModel;
-        AddAccountPopup.accArray = accArray;
+        EditAccountPopup.tableModel = tableModel;
+        EditAccountPopup.accArray = accArray;
+        EditAccountPopup.selectedAccount = selectedAccount;
+        EditAccountPopup.selectedRow = selectedRow;
+        
+        tf_name.setText(selectedAccount.getAccountName());
+        tf_balance.setText(String.valueOf(selectedAccount.getBalance()));
     }
 
     /**
@@ -49,7 +57,7 @@ public class AddAccountPopup extends javax.swing.JFrame {
         lbl_name = new javax.swing.JLabel();
         tf_balance = new javax.swing.JTextField();
         tf_name = new javax.swing.JTextField();
-        btn_add = new javax.swing.JButton();
+        btn_edit = new javax.swing.JButton();
         btn_cancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -59,11 +67,11 @@ public class AddAccountPopup extends javax.swing.JFrame {
         jPanel1.setLayout(null);
 
         lbl_title1.setFont(new java.awt.Font("Adwaita Mono", 1, 24)); // NOI18N
-        lbl_title1.setText("ADD ACCOUNT");
+        lbl_title1.setText("EDIT ACCOUNT");
         jPanel1.add(lbl_title1);
-        lbl_title1.setBounds(30, 10, 160, 40);
+        lbl_title1.setBounds(30, 10, 170, 40);
         jPanel1.add(jSeparator1);
-        jSeparator1.setBounds(200, 30, 170, 10);
+        jSeparator1.setBounds(210, 30, 160, 10);
 
         lbl_balance.setFont(new java.awt.Font("Adwaita Mono", 0, 14)); // NOI18N
         lbl_balance.setText("BALANCE");
@@ -83,16 +91,16 @@ public class AddAccountPopup extends javax.swing.JFrame {
         jPanel1.add(tf_name);
         tf_name.setBounds(30, 90, 340, 30);
 
-        btn_add.setText("ADD");
-        btn_add.setContentAreaFilled(false);
-        btn_add.setFocusPainted(false);
-        btn_add.addActionListener(new java.awt.event.ActionListener() {
+        btn_edit.setText("EDIT");
+        btn_edit.setContentAreaFilled(false);
+        btn_edit.setFocusPainted(false);
+        btn_edit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_addActionPerformed(evt);
+                btn_editActionPerformed(evt);
             }
         });
-        jPanel1.add(btn_add);
-        btn_add.setBounds(160, 200, 100, 30);
+        jPanel1.add(btn_edit);
+        btn_edit.setBounds(160, 200, 100, 30);
 
         btn_cancel.setText("CANCEL");
         btn_cancel.setContentAreaFilled(false);
@@ -112,34 +120,42 @@ public class AddAccountPopup extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addActionPerformed
-        if (tf_name.getText().isEmpty() || tf_balance.getText().isEmpty()) {
-            return;
-        }
-        
+    private void btn_editActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editActionPerformed
         try {
             String name = tf_name.getText().trim();
             double balance = Double.parseDouble(tf_balance.getText());
             
+            int accIndex = 0;
             for (Account a : accArray) {
-                if (a.getAccountName().equals(name)) {
+                if (a != selectedAccount && a.getAccountName().equals(name)) {
                     JOptionPane.showMessageDialog(null, "[ERR] Cannot add account with same names.");
                     return;
                 }
+                else if (a == selectedAccount) {
+                    accIndex = accArray.indexOf(a);
+                }
             }
+            
+            tableModel.removeRow(selectedRow);
             
             Object[] rowData = {name, balance};
             tableModel.addRow(rowData);
-            accArray.add(new Account(name, balance));
+            
+            selectedAccount.setAccountName(name);
+            selectedAccount.setBalance(balance);
+            
+            accArray.set(accIndex, selectedAccount);
             
             this.dispose();
         }
         catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null, "[ERR] Cannot parse balance. Please enter a valid number.");
         }
-    }//GEN-LAST:event_btn_addActionPerformed
+    }//GEN-LAST:event_btn_editActionPerformed
 
     private void btn_cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cancelActionPerformed
+        
+        
         this.dispose();
     }//GEN-LAST:event_btn_cancelActionPerformed
 
@@ -165,12 +181,12 @@ public class AddAccountPopup extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new AddAccountPopup(tableModel, accArray).setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new EditAccountPopup(tableModel, accArray, selectedAccount, selectedRow).setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_add;
     private javax.swing.JButton btn_cancel;
+    private javax.swing.JButton btn_edit;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lbl_balance;

@@ -59,8 +59,9 @@ public final class AccountsPage extends javax.swing.JFrame {
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbl_accounts = new javax.swing.JTable();
-        btn_deleteAccount = new javax.swing.JButton();
         btn_addAccount = new javax.swing.JButton();
+        btn_editAccount = new javax.swing.JButton();
+        btn_deleteAccount = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("MFinance Tracker");
@@ -179,18 +180,6 @@ public final class AccountsPage extends javax.swing.JFrame {
         jPanel2.add(jScrollPane1);
         jScrollPane1.setBounds(30, 100, 390, 280);
 
-        btn_deleteAccount.setFont(new java.awt.Font("Adwaita Mono", 0, 13)); // NOI18N
-        btn_deleteAccount.setText("Delete");
-        btn_deleteAccount.setContentAreaFilled(false);
-        btn_deleteAccount.setFocusPainted(false);
-        btn_deleteAccount.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_deleteAccountActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btn_deleteAccount);
-        btn_deleteAccount.setBounds(460, 140, 120, 30);
-
         btn_addAccount.setFont(new java.awt.Font("Adwaita Mono", 0, 13)); // NOI18N
         btn_addAccount.setText("Add");
         btn_addAccount.setContentAreaFilled(false);
@@ -202,6 +191,30 @@ public final class AccountsPage extends javax.swing.JFrame {
         });
         jPanel2.add(btn_addAccount);
         btn_addAccount.setBounds(460, 100, 120, 30);
+
+        btn_editAccount.setFont(new java.awt.Font("Adwaita Mono", 0, 13)); // NOI18N
+        btn_editAccount.setText("Edit");
+        btn_editAccount.setContentAreaFilled(false);
+        btn_editAccount.setFocusPainted(false);
+        btn_editAccount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_editAccountActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btn_editAccount);
+        btn_editAccount.setBounds(460, 140, 120, 30);
+
+        btn_deleteAccount.setFont(new java.awt.Font("Adwaita Mono", 0, 13)); // NOI18N
+        btn_deleteAccount.setText("Delete");
+        btn_deleteAccount.setContentAreaFilled(false);
+        btn_deleteAccount.setFocusPainted(false);
+        btn_deleteAccount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_deleteAccountActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btn_deleteAccount);
+        btn_deleteAccount.setBounds(460, 350, 120, 30);
 
         getContentPane().add(jPanel2);
         jPanel2.setBounds(170, 0, 610, 480);
@@ -255,6 +268,14 @@ public final class AccountsPage extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btn_deleteAccountActionPerformed
+
+    private void btn_editAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_editAccountActionPerformed
+        if(tbl_accounts.getSelectedRow() != -1) {
+            Account selectedAccount = accounts.get(tbl_accounts.getSelectedRow());
+
+            new EditAccountPopup(tableModel, accounts, selectedAccount, tbl_accounts.getSelectedRow()).setVisible(true);
+        }
+    }//GEN-LAST:event_btn_editAccountActionPerformed
 
     
     public void saveAccountsToFile() {
@@ -329,6 +350,7 @@ public final class AccountsPage extends javax.swing.JFrame {
     private javax.swing.JButton btn_addAccount;
     private javax.swing.JButton btn_dashboard;
     private javax.swing.JButton btn_deleteAccount;
+    private javax.swing.JButton btn_editAccount;
     private javax.swing.JButton btn_exit;
     private javax.swing.JButton btn_manage;
     private javax.swing.JPanel jPanel1;
