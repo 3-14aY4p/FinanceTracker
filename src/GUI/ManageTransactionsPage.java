@@ -68,7 +68,7 @@ public final class ManageTransactionsPage extends javax.swing.JFrame {
             tableModel.addRow(rowData);
         }
         
-        addFilter(tbl_transactions, tf_search, 0);
+        addFilter(tbl_transactions, tf_search, 1);
     }
 
     /**
